@@ -19,7 +19,7 @@ jobs:
           curl -X PUT \
             -H "Authorization: token $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/recodehive/REPO-NAME/collaborators/${USERNAME} \
+            https://api.github.com/repos/recodehive/Job-Seeker/collaborators/${USERNAME} \
             -d '{"permission": "pull"}'
 
       - name: Handle Errors
