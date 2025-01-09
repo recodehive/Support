@@ -25,4 +25,4 @@ jobs:
             USERNAME: ${{ github.event.issue.user.login }}
           run: |
             cd scripts && npm install            
-            node scripts/invite.js $USERNAME $TOKEN
+            node invite.js $USERNAME $TOKEN
