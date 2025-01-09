@@ -1,27 +1,28 @@
-name: Process Access Requests
+name: Send GitHub Collaborator Invite from Issue
 
 on:
   issues:
-    types:
-      - closed
+    types: [closed]
 
 jobs:
-  invite-user:
+  send-invite:
+
     if: contains(github.event.issue.labels.*.name, 'access-request')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Invite User to Private Repo
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          USERNAME: ${{ github.event.issue.user.login }}
-        run: |
-          curl -X PUT \
-            -H "Authorization: token $TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/recodehive/Opensource-practice/collaborators/${USERNAME} \
-            -d '{"permission": "pull"}'
+        - name: Checkout repository
+          uses: actions/checkout@v3
 
-      - name: Handle Errors
-        if: failure()
-        run: echo "An error occurred while processing the request."
+        - name: Set up Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
+
+        - name: Invite User to Private Repo
+          env:
+            TOKEN: ${{ secrets.GH_TOKEN }}
+            USERNAME: ${{ github.event.issue.user.login }}
+          run: |
+            npm install            
+            node scripts/invite.js $USERNAME $TOKEN
